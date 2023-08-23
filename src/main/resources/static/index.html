@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Car Details</h1>
+
+    <h2>Add Car Details</h2>
+    <label for="productId">Product ID:</label>
+    <input type="text" id="productId" name="productId">
+
+    <label for="name">Name:</label>
+    <input type="text" id="productName" name="productName">
+
+    <label for="price">Price:</label>
+    <input type="text" id="price" name="price">
+	
+	<label for="photo">Photo:</label>
+    <input type="file" id="photo" accept="image/*">
+	
+    <button id="addDetails">Add Details</button>
+	<div id="addDetailsResponse"></div>
+
+    <h2>Car Details Table</h2>
+    <button id="getCarDetails">Get Car Details</button>
+    <table id="carTable">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Price</th>
+				<th>Photo</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        // Add Details button click event
+        document.getElementById('addDetails').addEventListener('click', function() {
+            var productId = document.getElementById('productId').value;
+            var productName = document.getElementById('productName').value;
+            var price = document.getElementById('price').value;
+			var photoInput = document.getElementById('photo');
+            var photo = photoInput.files[0];
+			
+			
+			var formData = new FormData();
+            formData.append('productId', productId);
+            formData.append('productName', productName);
+            formData.append('price', price);
+			if (photo) {
+                formData.append('photo', photo);
+            }
+			
+
+            // Code to send the data to the URL using fetch or XMLHttpRequest
+            // You need to replace the URL and handle the response accordingly
+            // Example using fetch:
+            
+            fetch('http://localhost:9090/carshop/adddetails', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                var addDetailsResponseDiv = document.getElementById('addDetailsResponse');
+            addDetailsResponseDiv.textContent = data; // Display the returned message
+            })
+            .catch(error => {
+                console.error('Error:', 'it has some errors');
+            });
+            
+        });
+
+        // Get Car Details button click event
+        document.getElementById('getCarDetails').addEventListener('click', function() {
+            // Code to fetch car details from the URL using fetch or XMLHttpRequest
+            // You need to replace the URL and handle the response accordingly
+            // Example using fetch:
+            
+            fetch('http://localhost:9090/carshop/cardetails', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                var tableBody = document.querySelector('#carTable tbody');
+                tableBody.innerHTML = '';
+
+                data.forEach(car => {
+                    var row = tableBody.insertRow();
+                    row.insertCell().textContent = car.productId;
+                    row.insertCell().textContent = car.productName;
+                    row.insertCell().textContent = car.price;
+					
+					var photoCell = row.insertCell();
+					var imgElement = document.createElement('img');				
+					var byteArray = car.productPhoto ; // Your byte array here
+
+					imgElement.src = "data:image/jpeg;base64," + byteArray;
+
+					imgElement.alt = 'Product Photo';
+					imgElement.style.maxHeight = '100px'; // Adjust the styling as needed
+					photoCell.appendChild(imgElement);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
+        });
+    </script>
+</body>
+</html>
