@@ -1,18 +1,23 @@
 package com.azure.carshop.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Product {
 
+	@Id
 	private String productId;
 	private String productName;
 	private Double price;
-	private byte[] productPhoto;
+	//private byte[] productPhoto;
 	
-	public Product(String productId, String productName, Double price,byte[] productPhoto) {
+	public Product(String productId, String productName, Double price) {
 		super();
 		this.productId = productId;
 		this.productName = productName;
 		this.price = price;
-		this.productPhoto = productPhoto;
+		
 	}
 	
 	public Product() {
@@ -39,13 +44,13 @@ public class Product {
 		this.price = price;
 	}
 
-	public byte[] getProductPhoto() {
-		return productPhoto;
-	}
-
-	public void setProductPhoto(byte[] productPhoto) {
-		this.productPhoto = productPhoto;
-	}
+//	public byte[] getProductPhoto() {
+//		return productPhoto;
+//	}
+//
+//	public void setProductPhoto(byte[] productPhoto) {
+//		this.productPhoto = productPhoto;
+//	}
 	
 	
 	

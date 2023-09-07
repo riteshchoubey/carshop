@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+			
+            font-weight: bold;
+            background-color: blue;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+	<button id="goBack">Back</button>
+
+    <h1>Car Details Table</h1>
+    <table id="carTable">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Photo</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+	
+		var currentURL = window.location.href;
+		// Split the URL by '/' to get individual parts
+var urlParts = currentURL.split('/');
+
+// Remove the last part (the filename or empty string if the URL ends with '/')
+urlParts.pop();
+
+// Join the URL parts back together
+var cleanedURL = urlParts.join('/');
+
+// Construct the new URL by appending 'carshop/cardetails'
+var newURL = cleanedURL + '/carshop/cardetails';
+		
+	
+		document.getElementById('goBack').addEventListener('click', function() {
+			window.location.href = document.referrer;
+			});
+
+		
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get Car Details button click event
+            fetch(newURL, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                var tableBody = document.querySelector('#carTable tbody');
+                tableBody.innerHTML = '';
+
+                data.forEach(car => {
+                    var row = tableBody.insertRow();
+                    row.insertCell().textContent = car.productId;
+                    row.insertCell().textContent = car.productName;
+                    row.insertCell().textContent = car.price;
+					
+					var photoCell = row.insertCell();
+					var imgElement = document.createElement('img');				
+					var byteArray = car.productPhoto ; // Your byte array here
+
+					imgElement.src = "data:image/jpeg;base64," + byteArray;
+
+					imgElement.alt = 'Product Photo';
+					imgElement.style.maxHeight = '100px'; // Adjust the styling as needed
+					photoCell.appendChild(imgElement);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

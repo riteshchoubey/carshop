@@ -43,7 +43,10 @@
         }
 
         th {
-            background-color: #f2f2f2;
+			
+            font-weight: bold;
+            background-color: blue;
+            color: white;
         }
     </style>
 </head>
@@ -52,13 +55,13 @@
 
     <h2>Add Car Details</h2>
     <label for="productId">Product ID:</label>
-    <input type="text" id="productId" name="productId">
+    <input type="text" id="productId" name="productId" required>
 
     <label for="name">Name:</label>
-    <input type="text" id="productName" name="productName">
+    <input type="text" id="productName" name="productName" required >
 
     <label for="price">Price:</label>
-    <input type="text" id="price" name="price">
+    <input type="text" id="price" name="price" required>
 	
 	<label for="photo">Photo:</label>
     <input type="file" id="photo" accept="image/*">
@@ -66,21 +69,13 @@
     <button id="addDetails">Add Details</button>
 	<div id="addDetailsResponse"></div>
 
-    <h2>Car Details Table</h2>
-    <button id="getCarDetails">Get Car Details</button>
-    <table id="carTable">
-        <thead>
-            <tr>
-                <th>Product ID</th>
-                <th>Name</th>
-                <th>Price</th>
-				<th>Photo</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    <h2>Click Below to get Car Details</h2>
+    <button id="getCarDetails" onclick="openCarDetails()">Get Car Details</button>
+    
 
     <script>
+	
+		var currentURL = window.location.href;
         // Add Details button click event
         document.getElementById('addDetails').addEventListener('click', function() {
             var productId = document.getElementById('productId').value;
@@ -103,7 +98,7 @@
             // You need to replace the URL and handle the response accordingly
             // Example using fetch:
             
-            fetch('http://localhost:9090/carshop/adddetails', {
+            fetch(currentURL+'carshop/adddetails', {
                 method: 'POST',
                 body: formData
             })
@@ -117,43 +112,11 @@
             });
             
         });
-
-        // Get Car Details button click event
-        document.getElementById('getCarDetails').addEventListener('click', function() {
-            // Code to fetch car details from the URL using fetch or XMLHttpRequest
-            // You need to replace the URL and handle the response accordingly
-            // Example using fetch:
-            
-            fetch('http://localhost:9090/carshop/cardetails', {
-                method: 'POST'
-            })
-            .then(response => response.json())
-            .then(data => {
-                var tableBody = document.querySelector('#carTable tbody');
-                tableBody.innerHTML = '';
-
-                data.forEach(car => {
-                    var row = tableBody.insertRow();
-                    row.insertCell().textContent = car.productId;
-                    row.insertCell().textContent = car.productName;
-                    row.insertCell().textContent = car.price;
-					
-					var photoCell = row.insertCell();
-					var imgElement = document.createElement('img');				
-					var byteArray = car.productPhoto ; // Your byte array here
-
-					imgElement.src = "data:image/jpeg;base64," + byteArray;
-
-					imgElement.alt = 'Product Photo';
-					imgElement.style.maxHeight = '100px'; // Adjust the styling as needed
-					photoCell.appendChild(imgElement);
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-            
-        });
+		
+		function openCarDetails() {
+            window.open('carDetails.html', '_blank');
+        }
+		
     </script>
 </body>
 </html>
