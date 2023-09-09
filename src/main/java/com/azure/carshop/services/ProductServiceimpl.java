@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.azure.carshop.config.AzureStorageConfig;
@@ -69,6 +70,7 @@ public class ProductServiceimpl implements ProductService {
     }
 	
 	@Override
+	@Cacheable(value = "productCache")
 	public List<productModal> getAllProducts() {
 		
 		List<Product> list= cardetailsDao.findAll();
