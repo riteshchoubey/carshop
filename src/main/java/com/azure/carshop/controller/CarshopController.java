@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,6 +64,7 @@ public class CarshopController {
 	    	
 	    }
 	    
+	   
 	    @GetMapping
 	    public String showIndexPage() {
 	        return "index"; // Return the name of the HTML file (without extension)

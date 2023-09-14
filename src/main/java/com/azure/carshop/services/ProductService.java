@@ -15,5 +15,7 @@ public interface ProductService {
 	public String uploadPhoto(String photoName, byte[] photoData);
 
 	public byte[] getPhoto(String photoName);
+	
+
 
 }
